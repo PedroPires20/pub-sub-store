@@ -23,8 +23,28 @@ async function printReport() {
       }
 }
 
+// Função auxiliar para verificar se realmente existem produtos na mensagem sendo processada
+function hasProducts(order) {
+    return Array.isArray(order.products) && order.products.length > 0;
+}
+
+async function processMessage(msg) {
+    const orderData = JSON.parse(msg.content);
+    try {
+        if(hasProducts(orderData)) {
+            await updateReport(orderData.products);
+            await printReport();
+        }else {
+            console.log("X ERRO: O PEDIDO PROCESSADO NÃO POSSUI NENHUM PRODUTO. RELATÓRIO INALTERADO!")
+        }
+    }catch(error) {
+        console.log(`X ERROR TO PROCESS: ${error}`);
+    }
+}
+
 async function consume() {
-    //TODO: Constuir a comunicação com a fila 
+    console.log(`Inscrito com sucesso na fila ${process.env.RABBITMQ_QUEUE_NAME}`)
+    await (await RabbitMQService.getInstance()).consume(process.env.RABBITMQ_QUEUE_NAME, (msg) => processMessage(msg));
 } 
 
 consume()

@@ -1,11 +1,11 @@
 {
   "name": "report",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC"
+  "description": "Serviço para gerar relatórios após um pedido ser concluído com sucesso no sistema",
+  "author": "Pedro Dias Pires",
+  "license": "ISC",
+  "dependencies": {
+    "amqplib": "^0.8.0",
+    "dotenv": "^14.2.0"
+  }
 }
